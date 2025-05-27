@@ -11,11 +11,16 @@ def llm_response(message,nerfreal:BaseReal):
         api_key=os.getenv("DASHSCOPE_API_KEY"),
         # 填写DashScope SDK的base_url
         base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+        # 使用本地部署的vllm提供的OpenAI兼容API服务
+        #api_key = "EMPTY",
+        #base_url = "http://172.19.224.1:6006/v1"
+        #base_url = "http://localhost:8000/v1"
     )
     end = time.perf_counter()
     logger.info(f"llm Time init: {end-start}s")
     completion = client.chat.completions.create(
         model="qwen-plus",
+        #model="Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4", # 使用本地部署的vllm提供的OpenAI兼容API服务
         messages=[{'role': 'system', 'content': 'You are a helpful assistant.'},
                   {'role': 'user', 'content': message}],
         stream=True,
